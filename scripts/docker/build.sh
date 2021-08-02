@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build . --rm -t tacotron2
+docker build . --rm -t mile2
