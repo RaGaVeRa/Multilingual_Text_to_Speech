@@ -51,6 +51,7 @@ def train(logging_start_epoch, epoch, data, model, criterion, optimizer):
         global_step = done + epoch * len(data)
         optimizer.zero_grad() 
 
+        print( "i|batchlen|global_step|epoch {}|{}|{}|{}".format(i, len(batch), global_step, epoch))
         # parse batch
         batch = list(map(to_gpu, batch))
         src, src_len, trg_mel, trg_lin, trg_len, stop_trg, spkrs, langs = batch
@@ -221,7 +222,10 @@ if __name__ == '__main__':
 
     # load dataset
     dataset = TextToSpeechDatasetCollection(os.path.join(args.data_root, hp.dataset))
-
+    #print("Params : \n {}".format(hp))
+    for k,v in vars(args).items():
+        print("{}:{}".format(k,v))
+    print("\nLoading data\n")
     if hp.multi_language and hp.balanced_sampling and hp.perfect_sampling:
         dp_devices = args.max_gpus if hp.parallelization and torch.cuda.device_count() > 1 else 1 
         train_sampler = PerfectBatchSampler(dataset.train, hp.languages, hp.batch_size, data_parallel_devices=dp_devices, shuffle=True, drop_last=True)
@@ -289,9 +293,13 @@ if __name__ == '__main__':
     log_dir = os.path.join(args.base_directory, "logs", f'{hp.version}-{datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")}')
     Logger.initialize(log_dir, args.flush_seconds)
 
+    for k,v in vars(args).items():
+        print("{}:{}".format(k,v))
+    print ("\nStarting Training ...\n");
     # training loop
     best_eval = float('inf')
     for epoch in range(initial_epoch, hp.epochs):
+        print("Epoch : {}\n".format(epoch))
         train(args.logging_start, epoch, train_data, model, criterion, optimizer)  
         if hp.learning_rate_decay_start - hp.learning_rate_decay_each < epoch * len(train_data):
             scheduler.step()
