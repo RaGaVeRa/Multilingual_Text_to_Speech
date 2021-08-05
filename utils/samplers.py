@@ -69,6 +69,7 @@ class PerfectBatchSampler(Sampler):
 
     def __init__(self, data_source, languages, batch_size, data_parallel_devices=1, shuffle=True, drop_last=False):
 
+        print("batch_size={}, len(languages)={}, data_parallel_devices={}".format(batch_size, len(languages), data_parallel_devices))
         assert batch_size % (len(languages) * data_parallel_devices) == 0, (
             'Batch size must be divisible by number of languages times the number of data parallel devices (if enabled).')
 
