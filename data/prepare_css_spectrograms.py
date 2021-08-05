@@ -13,7 +13,7 @@ if __name__ == '__main__':
     import re
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("--css10_directory", type=str, default="css10", help="Base directory of CSS10.")
+    parser.add_argument("--css10_directory", type=str, default="etc", help="Base directory of CSS10.")
     parser.add_argument("--css_comvoi_directory", type=str, default="css_comvoi", help="Base directory of CSS10 with Common Voice.")
     parser.add_argument("--comvoi_directory", type=str, default="comvoi_clean", help="Base directory of Common Voice.")
     parser.add_argument("--sample_rate", type=int, default=22050, help="Sample rate.")
@@ -29,11 +29,15 @@ if __name__ == '__main__':
     hp.sample_rate = args.sample_rate
     hp.num_fft = args.num_fft
 
+    #files_to_solve = [
+        #(args.css10_directory, "train.txt"),
+        #(args.css10_directory, "val.txt"),
+        #(args.css_comvoi_directory, "train.txt"),
+        #(args.css_comvoi_directory, "val.txt"),
+    #]
     files_to_solve = [
         (args.css10_directory, "train.txt"),
         (args.css10_directory, "val.txt"),
-        (args.css_comvoi_directory, "train.txt"),
-        (args.css_comvoi_directory, "val.txt"),
     ]
 
     spectrogram_dirs = [os.path.join(args.comvoi_directory, 'spectrograms'), 
