@@ -144,9 +144,12 @@ class TextToSpeechDataset(torch.utils.data.Dataset):
 
         # load or compute spectrogram
         if hp.cache_spectrograms:
+            #print("Loading Spectrogram : {}".format(spectrogram_path))
+            print("S", end="")
             full_spec_path = os.path.join(self.root_dir, spectrogram_path)
             spectrogram = np.load(full_spec_path)
         else:
+            print("Computing Spectrograms")
             full_audio_path = os.path.join(self.root_dir, audio_path)
             audio_data = audio.load(full_audio_path)
             spectrogram = audio.spectrogram(audio_data, is_mel)
